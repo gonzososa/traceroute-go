@@ -35,24 +35,17 @@ func SendPacket (hostname string, addresses chan string, exit chan bool) {
         Check (err)
         defer conn.Close ()
 
-        fileConn, err := conn.File ()
-        Check (err)
-        defer fileConn.Close ()
-
-        fpc, err := net.FilePacketConn (fileConn)
-        Check (err)
-        defer fpc.Close ()
-
-        packet := ipv4.NewPacketConn (fpc)
+        packet := ipv4.NewPacketConn (conn)
         defer packet.Close ()
         var ttl = 1
         var output, destAddress string
 
-        for (destAddress != remoteAddress.IP.String () && ttl < MaxTTL) {
+        for (destAddress != remoteAddress.IP.String () && ttl <= MaxTTL) {
                 packet.SetTTL (ttl)
 
                 buffer := make ([]byte, 0x00)
-                packet.WriteTo (buffer, nil, remoteAddress)
+                _, err := packet.Write (buffer) // write bytes through connected socket
+                Check (err)
 
                 destAddress = <- addresses //wait for routers response
 

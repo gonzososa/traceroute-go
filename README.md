@@ -1,5 +1,5 @@
-Excercise to emulate traceroute utility in golang
+Excersice to simulate tracing of packets in a network. It have a different approach that google's example.
 
-To run app requires root or supersu privileges.
+Run app requires root or supersu privileges.
 
-Note: Only works in *nix systems*, try to execute it in Windows crashes everytime.
+Note: Only works in \*nix systems, try to execute it in Windows crashes everytime.
