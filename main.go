@@ -43,16 +43,18 @@ func SendPacket (hostname string, addresses chan string, exit chan bool) {
         for (destAddress != remoteAddress.IP.String () && ttl <= MaxTTL) {
                 packet.SetTTL (ttl)
 
+                begin := time.Now ()
                 buffer := make ([]byte, 0x00)
                 _, err := packet.Write (buffer) // write bytes through connected socket
                 Check (err)
 
                 destAddress = <- addresses //wait for routers response
+                rtt := time.Since (begin)
 
                 if destAddress == "" {
-                        output = fmt.Sprintf ("%d\t%s\t%s", ttl, "*", "*")
+                        output = fmt.Sprintf ("%d\t%s\t%s\t%v", ttl, "*", "*", rtt)
                 } else {
-                        output = fmt.Sprintf ("%d\t%s", ttl, destAddress)
+                        output = fmt.Sprintf ("%d\t%s\t%v", ttl, destAddress, rtt)
                 }
 
                 fmt.Println (output)
