@@ -1,4 +1,4 @@
-Excersice to simulate tracing of packets in a network. It have different approach that google's example.
+Exercise to simulate tracing of packets in a network. It have different approach that google's example.
 
 Run app requires root or supersu privileges.
 
